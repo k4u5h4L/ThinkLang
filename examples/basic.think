@@ -1,0 +1,31 @@
+# examples program
+
+# help() in shell shows all builtin functions
+
+# global types/ reserved variables
+# int, str, function, float
+
+# semicolons are optional
+
+######## Display #########
+
+print("Hello world!")
+
+# var name = gets("promp user: ") # prompt input 
+
+sys("echo hello") # system command
+print(version()) # get current version
+
+# clear() # clear terminal 
+
+# exit() #exit script
+
+
+######## strings/variables #########
+
+var string1 = "Hello"
+var sep = ", "
+var string2 = "world"
+
+var temp =  string1 + sep + string2
+print(temp)

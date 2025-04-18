@@ -1,0 +1,4 @@
+import "math"
+
+var a = add(1, 2)
+print(a)

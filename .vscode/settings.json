@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "[xml]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  }
+}
