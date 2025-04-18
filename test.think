@@ -2,3 +2,7 @@ import "math"
 
 var a = add(1, 2)
 print(a)
+
+think "this would be a prompt"
+
+print(a)

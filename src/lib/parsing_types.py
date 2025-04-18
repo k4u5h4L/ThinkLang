@@ -11,7 +11,14 @@ from .error import RTError
 
 
 class Context:
-    __slots__ = ('display_name', 'parent', 'parent_entry_pos', 'symbol_table', 'private_symbol_table')
+    __slots__ = (
+        "display_name",
+        "parent",
+        "parent_entry_pos",
+        "symbol_table",
+        "private_symbol_table",
+    )
+
     def __init__(self, display_name, parent=None, parent_entry_pos=None):
         self.display_name = display_name
         self.parent = parent
@@ -19,18 +26,18 @@ class Context:
         self.symbol_table = None
         self.private_symbol_table = None
 
+
 #######################################
 # SYMBOL TABLE
 #######################################
 
 
 class SymbolTable:
-    __slots__ = ('symbols', 'parent')
-    
+    __slots__ = ("symbols", "parent")
+
     def __init__(self, parent=None):
         self.symbols = {}
         self.parent = parent
-
 
     def get(self, name):
         value = self.symbols.get(name, None)
@@ -151,6 +158,7 @@ class Object:
             self.context,
         )
 
+
 class BaseFunction(Object):
     def __init__(self, name):
         super().__init__()
@@ -159,7 +167,9 @@ class BaseFunction(Object):
     def generate_new_context(self):
         new_context = Context(self.name, self.context, self.pos_start)
         new_context.symbol_table = SymbolTable(new_context.parent.symbol_table)
-        new_context.private_symbol_table = SymbolTable(new_context.parent.private_symbol_table)
+        new_context.private_symbol_table = SymbolTable(
+            new_context.parent.private_symbol_table
+        )
         return new_context
 
     def check_args(self, arg_names, args):
@@ -204,7 +214,8 @@ class BaseFunction(Object):
 
 
 class Null(Object):
-    __slots__ = ("value")
+    __slots__ = "value"
+
     def __init__(self, value):
         super().__init__()
         self.value = value
@@ -235,7 +246,7 @@ Null.null = Null("null")
 
 
 class Number(Object):
-    __slots__ = ("value")
+    __slots__ = "value"
 
     def __init__(self, value):
         super().__init__()
@@ -387,8 +398,6 @@ class Number(Object):
                 self, other, f"Can't multiply a number by a type of '{other.type()}'"
             )
 
-
-
     def copy(self):
         copy = Number(self.value)
         copy.set_pos(self.pos_start, self.pos_end)
@@ -417,14 +426,12 @@ Number.true = Number(1)
 
 
 class String(Object):
-    __slots__ = ("value")
+    __slots__ = "value"
 
     def __init__(self, value):
         super().__init__()
         self.value = value
-        self.fields = [
-            "size"
-        ]
+        self.fields = ["size"]
 
     def __len__(self):
         return len(self.value)
@@ -510,7 +517,7 @@ class String(Object):
             return None, Object.illegal_operation(
                 self, other, f"Can't get a string from a type of '{other.type}'"
             )
-            
+
     def get_field(self, field_name):
         if field_name == "size":
             return Number(len(self.value)).set_context(self.context), None
@@ -521,10 +528,10 @@ class String(Object):
                 f"String has no field '{field_name}'",
                 self.context,
             )
-    
+
 
 class List(Object):
-    __slots__ = ("elements")
+    __slots__ = "elements"
 
     def __init__(self, elements):
         super().__init__()
