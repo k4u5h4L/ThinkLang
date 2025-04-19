@@ -2,6 +2,7 @@ import os
 
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 os.environ["PYTHONWARNINGS"] = "ignore"
+os.environ["HF_HOME"] = os.getcwd() + "/cache/models"
 
 import logging
 
@@ -28,7 +29,6 @@ with console.status(
         torch_dtype=torch.bfloat16,
     )
 path = os.getcwd() + "/examples"
-os.environ["HF_HOME"] = os.getcwd() + "/cache/models"
 
 
 def gather_prompt(prompt: str) -> str:
@@ -45,7 +45,7 @@ def gather_prompt(prompt: str) -> str:
     instruct_prompt = f"""You are a software developer writing code in a new language. The language syntax is shown below:
         {training_codes}
 
-        You are to code in this langauge using this syntax. Write just the source code without any explanation.
+        You are to code in this langauge using this syntax. Write just the source code without any explanation. Keep all the source code inside triple backticks (`).
         
         Prompt: {prompt}"""
 
@@ -74,7 +74,11 @@ def extract_triple_backtick_blocks(text):
     # This regex matches content between triple backticks, including multiline content
     pattern = r"```(\S*)\n(.*?)```"
     # re.DOTALL allows '.' to match newline characters too
-    return re.findall(pattern, text, re.DOTALL)[0][1]
+    extractions = re.findall(pattern, text, re.DOTALL)
+    if len(extractions) > 0:
+        return extractions[0][1]
+    else:
+        return ""
 
 
 def clean_response(response: str) -> str:
@@ -84,7 +88,8 @@ def clean_response(response: str) -> str:
 
 def generate_code(initial_prompt: str) -> str:
     with console.status(
-        "Generating spagetti code that is guaranteed to fail lol..."
+        "Generating spagetti code that is guaranteed to fail lol...\n"
+        + f"Your prompt: [blue underline]{initial_prompt}"
     ) as status:
         prompt = gather_prompt(prompt=initial_prompt)
         response = generate_respose(prompt=prompt)

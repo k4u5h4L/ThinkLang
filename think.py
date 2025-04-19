@@ -9,8 +9,10 @@ console = Console()
 
 def handle_commands(args):
     if args[0] == "-h" or args[0] == "--help":
-        print(f"Usage: {sys.argv[0]} [file]")
-        print("If no file is specified, the interpreter will run in interactive mode.")
+        console.print(f"Usage: {sys.argv[0]} [file]")
+        console.print(
+            "If no file is specified, the interpreter will run in interactive mode."
+        )
     else:
         path = str(args[0].replace("\\", "/"))
         fname = os.path.split(path)[0]
@@ -18,12 +20,12 @@ def handle_commands(args):
             with open(path, "r") as f:
                 source_code = [line for line in f.readlines() if line.strip()]
         else:
-            print(f"File '{fname}' does not exist")
+            console.print(f"File '{fname}' does not exist", style="bold red")
             exit(1)
         for code in source_code:
             result, err = run(fname, code)
             if err:
-                print(err)
+                console.print(err, style="bold red")
 
 
 if __name__ == "__main__":

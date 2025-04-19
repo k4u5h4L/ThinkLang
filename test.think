@@ -1,9 +1,8 @@
-import "math"
+var a = 5
+var b = 4
 
-var a = add(1, 2)
-print(a)
-var b = 2
+var c = a + b
 
-think "write a function to subtract two numbers, taking in 2 arguments, and call it using a = subtract(a, b)"
+think "print the variable 'c' to the console"
 
-print(a)
+think "subtract 'a' with 'b' and print the result"
