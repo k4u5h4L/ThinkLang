@@ -2,7 +2,8 @@ import "math"
 
 var a = add(1, 2)
 print(a)
+var b = 2
 
-think "this would be a prompt"
+think "write a function to subtract two numbers, taking in 2 arguments, and call it using a = subtract(a, b)"
 
 print(a)

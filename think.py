@@ -2,8 +2,6 @@ from src.interpreter import run, VERSION, ASCII_NAME
 import os
 import sys
 
-os.environ["HF_HOME"] = __file__ + "./cache/models"
-
 
 def handle_commands(args):
     if args[0] == "-h" or args[0] == "--help":

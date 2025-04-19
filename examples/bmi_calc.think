@@ -1,6 +1,7 @@
+# bmi calculator
 
 func main()
-    # bmi calculator
+    # get the input from the user
     name = gets("Please Enter your name: ")
     weight = gets("Please Enter your weight: ")
     height = gets("Please Enter your height: ")
