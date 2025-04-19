@@ -2,6 +2,10 @@ from src.interpreter import run, VERSION, ASCII_NAME
 import os
 import sys
 
+from rich.console import Console
+
+console = Console()
+
 
 def handle_commands(args):
     if args[0] == "-h" or args[0] == "--help":
@@ -28,23 +32,24 @@ if __name__ == "__main__":
         handle_commands(args)
         exit(0)
 
-    os.system("cls" if os.name == "nt" else "clear")
-    print(ASCII_NAME)
-    print("-" * 35)
-    print(f"ThinkLang Shell {VERSION} - Python {sys.version.split('(')[0]}")
-    print("-" * 35)
-    print("Type 'help()' for a list of commands")
+    # os.system("cls" if os.name == "nt" else "clear")
+    console.clear()
+    console.print(ASCII_NAME, style="blue")
+    console.print("-" * 35, style="bold blue")
+    console.print(f"ThinkLang Shell {VERSION} - Python {sys.version.split('(')[0]}")
+    console.print("-" * 35, style="bold blue")
+    console.print("Type 'help()' for a list of commands", style="white")
     while True:
-        text = input("ThinkLang >> ")
+        text = console.input(prompt="ThinkLang >> ")
         result, err = run("<stdin>", text)
 
         if text.strip() == "":
             continue
 
         if err:
-            print(err)
+            console.print(err, style="bold red")
         elif result:
             if len(result.elements) == 1:
-                print(repr(result.elements[0]))
+                console.print(repr(result.elements[0]))
             else:
-                print(repr(result))
+                console.print(repr(result))

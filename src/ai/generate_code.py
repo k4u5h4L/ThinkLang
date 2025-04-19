@@ -1,25 +1,33 @@
-import src
 import os
+
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+os.environ["PYTHONWARNINGS"] = "ignore"
+
+import logging
+
+logging.basicConfig(level="ERROR")
+
+import src
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import re
 
-import warnings
+from rich.console import Console
+from rich.spinner import Spinner, SPINNERS
 
-warnings.filterwarnings("ignore")
+console = Console()
 
-os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+model_name = "deepseek-ai/deepseek-coder-1.3b-instruct"
 
-print("Importing the brains behind this stupid language (Deepseek lol)...")
-tokenizer = AutoTokenizer.from_pretrained(
-    "deepseek-ai/deepseek-coder-1.3b-instruct", trust_remote_code=True
-)
-model = AutoModelForCausalLM.from_pretrained(
-    "deepseek-ai/deepseek-coder-1.3b-instruct",
-    trust_remote_code=True,
-    torch_dtype=torch.bfloat16,
-)
-
+with console.status(
+    "Importing the brains behind this stupid language (Deepseek lol)..."
+) as status:
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        trust_remote_code=True,
+        torch_dtype=torch.bfloat16,
+    )
 path = os.getcwd() + "/examples"
 os.environ["HF_HOME"] = os.getcwd() + "/cache/models"
 
@@ -54,8 +62,8 @@ def generate_respose(prompt: str) -> str:
         inputs,
         max_new_tokens=512,
         do_sample=False,
-        top_k=50,
-        top_p=0.95,
+        # top_k=50,
+        # top_p=0.95,
         num_return_sequences=1,
         eos_token_id=tokenizer.eos_token_id,
     )
@@ -64,20 +72,26 @@ def generate_respose(prompt: str) -> str:
 
 def extract_triple_backtick_blocks(text):
     # This regex matches content between triple backticks, including multiline content
-    pattern = r"```(.*?)```"
+    pattern = r"```(\S*)\n(.*?)```"
     # re.DOTALL allows '.' to match newline characters too
-    return re.findall(pattern, text, re.DOTALL)[0]
+    return re.findall(pattern, text, re.DOTALL)[0][1]
 
 
 def clean_response(response: str) -> str:
-    print(extract_triple_backtick_blocks(response))
+    runnable_code = extract_triple_backtick_blocks(response)
+    console.print("DEBUG: runnable code:\n", runnable_code, style="bold red")
+    return runnable_code
 
 
 def generate_code(initial_prompt: str) -> str:
-    prompt = gather_prompt(prompt=initial_prompt)
-    response = generate_respose(prompt=prompt)
-    response = clean_response(response)
+    with console.status(
+        "Generating spagetti code that is guaranteed to fail lol..."
+    ) as status:
+        prompt = gather_prompt(prompt=initial_prompt)
+        response = generate_respose(prompt=prompt)
+        response = clean_response(response)
+
     src.interpreter.run("<stdin>", response)
-    return initial_prompt
+    return response
 
     # ask it to generate new code based on the syntax

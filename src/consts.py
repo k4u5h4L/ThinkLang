@@ -9,7 +9,7 @@ DIGITS = string.digits
 LETTERS = string.ascii_letters
 LETTERS_DIGITS = LETTERS + DIGITS
 
-VERSION = "v1.0.0"
+VERSION = "0.0.89"
 
 STD_PATH = os.path.join(os.getcwd(), "src/std")
 
