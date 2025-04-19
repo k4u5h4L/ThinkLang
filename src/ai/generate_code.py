@@ -13,7 +13,6 @@ import torch
 import re
 
 from rich.console import Console
-from rich.spinner import Spinner, SPINNERS
 
 console = Console()
 
@@ -35,6 +34,7 @@ os.environ["HF_HOME"] = os.getcwd() + "/cache/models"
 def gather_prompt(prompt: str) -> str:
     training_codes = ""
     sample_codes = [f"{path}/{f}" for f in os.listdir(path=path)]
+    sample_codes.append(os.getcwd() + "/src/std/math.think")
 
     # map them into a single string and feed that into the model as context
     for code_loc in sample_codes:
@@ -79,7 +79,6 @@ def extract_triple_backtick_blocks(text):
 
 def clean_response(response: str) -> str:
     runnable_code = extract_triple_backtick_blocks(response)
-    console.print("DEBUG: runnable code:\n", runnable_code, style="bold red")
     return runnable_code
 
 

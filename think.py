@@ -50,6 +50,11 @@ if __name__ == "__main__":
             console.print(err, style="bold red")
         elif result:
             if len(result.elements) == 1:
-                console.print(repr(result.elements[0]))
+                res = result.elements[0]
             else:
-                console.print(repr(result))
+                res = result
+
+            if type(res) == str:
+                console.print(res, style="green")
+            else:
+                console.print(res)
