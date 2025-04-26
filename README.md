@@ -6,7 +6,7 @@ As everyone seems to be using AI in every field imaginable (even when it doesn't
 
 Ever bored of your source code being deterministic? Want to spice things up for your production builds so that you're always on your toes? Now you can do that and more, as you leave the execution of your code to an AI, which will shameless write code in places you have asked it to, only for it to _sometimes_ fail.
 
-If you're lazy to code a chunk of code, just use the inbuilt keyword `think` and a prompt right in your code, so that the AI picks up and executes what it thinks is right.
+If you're too lazy to type a chunk of code, just use the inbuilt keyword `think` and a prompt right in your code, so that the AI picks up and executes what it thinks is right.
 
 ## I'm impressed, how do I get started?
 
@@ -33,3 +33,6 @@ Remember, if this doesn't work or gives you the wrong output, then try again. Wh
 
 ## Hall of fame
 If you use this joke of a language in production, your name will be featured here.
+
+## Mentions
+This project is a fork of [Cupscript](https://github.com/Fus3n/cupscript), which contains most of the basic stuff required to make a programming language from scratch. ThinkLang only adds above it, extending unnecessary features.
